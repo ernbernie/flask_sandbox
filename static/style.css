@@ -160,3 +160,75 @@ main {
 .hidden {
     display: none;
 }
+
+/* Prayer Container */
+.prayer-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 2; /* Ensure it appears above the overlay */
+    width: 100%;
+    max-width: 500px;
+}
+
+/* Input Field */
+#prayer-input {
+    width: 90%;
+    max-width: 400px;
+    padding: 12px 15px;
+    font-size: 1rem;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    border-radius: 30px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    outline: none;
+    text-align: left; /* Align text and placeholder to the left */
+    transition: border-color 0.3s ease;
+}
+
+#prayer-input::placeholder {
+    font-style: italic;
+    color: rgba(255, 255, 255, 0.8);
+    text-align: left; /* Align placeholder text to the left */
+}
+
+#prayer-input:focus {
+    border-color: rgba(255, 255, 255, 1);
+}
+
+/* Submit Button */
+#prayer-submit {
+    margin-top: 15px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    border-radius: 30px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+#prayer-submit:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 1);
+}
+
+#prayer-submit:focus {
+    outline: none;
+}
+
+/* Ensure Responsiveness */
+@media (max-width: 768px) {
+    #prayer-input,
+    #prayer-submit {
+        font-size: 0.9rem;
+    }
+}
+
+/* Exclude Overlay Effect on Prayer Container */
+.hero .overlay {
+    z-index: 1; /* Ensure it's below the prayer-container */
+}

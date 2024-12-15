@@ -1,3 +1,4 @@
+// --------------------------------------slideshow and arrows----------------------------------
 const images = [
     "/static/images/image1.jpg",
     "/static/images/image2.jpg",
@@ -63,3 +64,41 @@ document.querySelector('.arrow.right').addEventListener('click', () => handleArr
 
 // Start the slideshow on page load
 startSlideshow();
+
+// -------------------------------submitting prayer------------------------------------------------------------------
+document.getElementById("prayer-submit").addEventListener("click", function (e) {
+    e.preventDefault(); // Prevent default if it was a form, now just a button so optional
+
+    const prayerText = document.getElementById("prayer-input").value.trim();
+    if (!prayerText) {
+        alert("Please type your prayer before submitting.");
+        return;
+    }
+
+    const prayer = `Dear Heavenly Father, ${prayerText}`;
+
+    fetch('/submit-prayer', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ prayer })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`Server error: ${response.status} ${response.statusText}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.error) {
+            alert("Error: " + data.error);
+        } else {
+            displayResponse(data.response);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert("An unexpected error occurred. Please try again later.");
+    });
+});
