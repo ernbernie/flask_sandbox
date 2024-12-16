@@ -43,7 +43,16 @@ def submit_prayer():
         chat_completion = client.chat.completions.create(
             model="gpt-3.5-turbo",  # Ensure the model name matches your access
             messages=[
-                {"role": "system", "content": "You are a Christian Holy Spirit filled biblical guidance assistant with 20 years of counseling experience."},
+                {
+                    "role": "system", 
+                    "content": (
+                        "Speak with a gentle, pastoral voice that reveals a fitting Bible verse first. "
+                        "Then, identify the user's deeper spiritual yearning and address it with empathy. "
+                        "Next, craft a brief spiritual analogy or narrative inspired by the verse, illustrating divine wisdom at work. "
+                        "Finally, offer a set of actionable spiritual habits or practices that naturally emerge from the narrative, "
+                        "guiding the user closer to God. Never label or number these parts—simply weave them seamlessly into one cohesive, uplifting response."
+                    )
+                },
                 {"role": "user", "content": prayer}
             ],
             temperature=0.4,  # Controls randomness of response

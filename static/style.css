@@ -232,3 +232,48 @@ main {
 .hero .overlay {
     z-index: 1; /* Ensure it's below the prayer-container */
 }
+
+/* Response Section Styling */
+#response-section {
+    padding: 20px;
+    margin: 0 auto;
+    max-width: 600px;
+    text-align: left; /* Align left for better readability */
+}
+
+/* Response Container */
+.response-container {
+    background: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 15px;
+    margin-top: 20px;
+    font-size: 1rem;
+    line-height: 1.5;
+    white-space: pre-wrap; /* Preserve formatting of the text */
+    color: #333;
+    box-shadow: 0px 2px 10px rgba(0,0,0,0.1);
+}
+
+/* Loading Spinner */
+#loading-spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100px; /* Ensure spinner area is visible */
+}
+
+.spinner {
+    border: 8px solid #f3f3f3; /* Light gray */
+    border-top: 8px solid #343a40; /* Darker color for contrast */
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1s linear infinite;
+    margin: 20px auto; /* Center horizontally */
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

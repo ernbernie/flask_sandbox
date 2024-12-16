@@ -66,8 +66,47 @@ document.querySelector('.arrow.right').addEventListener('click', () => handleArr
 startSlideshow();
 
 // -------------------------------submitting prayer------------------------------------------------------------------
+// Create a loading spinner element (can be styled in CSS)
+const loadingSpinner = document.createElement('div');
+loadingSpinner.id = 'loading-spinner';
+loadingSpinner.innerHTML = `
+    <div class="spinner"></div>
+`;
+
+// Display a loading indicator when making requests
+function showLoading() {
+    const responseSection = document.getElementById("response-section");
+    responseSection.innerHTML = ""; // Clear any previous responses
+    responseSection.appendChild(loadingSpinner);
+}
+
+function hideLoading() {
+    const responseSection = document.getElementById("response-section");
+    const spinner = document.getElementById('loading-spinner');
+    if (spinner) {
+        responseSection.removeChild(spinner);
+    }
+}
+
+// Function to display the API response in a styled container
+function displayResponse(text) {
+    const responseSection = document.getElementById("response-section");
+    // Clear any existing content (like loading spinner)
+    responseSection.innerHTML = "";
+
+    // Create a container for the response text
+    const responseContainer = document.createElement("div");
+    responseContainer.className = "response-container";
+
+    // Set the text content and preserve formatting (like new lines)
+    responseContainer.textContent = text;
+
+    // Append to the response section
+    responseSection.appendChild(responseContainer);
+}
+
 document.getElementById("prayer-submit").addEventListener("click", function (e) {
-    e.preventDefault(); // Prevent default if it was a form, now just a button so optional
+    e.preventDefault(); // Prevent default behavior
 
     const prayerText = document.getElementById("prayer-input").value.trim();
     if (!prayerText) {
@@ -76,6 +115,9 @@ document.getElementById("prayer-submit").addEventListener("click", function (e) 
     }
 
     const prayer = `Dear Heavenly Father, ${prayerText}`;
+
+    // Show loading indicator before the fetch call
+    showLoading();
 
     fetch('/submit-prayer', {
         method: 'POST',
@@ -91,6 +133,7 @@ document.getElementById("prayer-submit").addEventListener("click", function (e) 
         return response.json();
     })
     .then(data => {
+        hideLoading();
         if (data.error) {
             alert("Error: " + data.error);
         } else {
@@ -98,6 +141,7 @@ document.getElementById("prayer-submit").addEventListener("click", function (e) 
         }
     })
     .catch(error => {
+        hideLoading();
         console.error('Error:', error);
         alert("An unexpected error occurred. Please try again later.");
     });
