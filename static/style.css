@@ -1,4 +1,6 @@
-/* General styles */
+/* ---------------------------------------------------------- */
+/* General Styles and Global Classes */
+/* ---------------------------------------------------------- */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -8,7 +10,13 @@ body {
     text-align: center;
 }
 
+.hidden {
+    display: none;
+}
+
+/* ---------------------------------------------------------- */
 /* Navbar */
+/* ---------------------------------------------------------- */
 .navbar {
     display: flex;
     justify-content: space-between;
@@ -45,7 +53,9 @@ body {
     text-align: right;
 }
 
-/* Arrows (Hover and Focus) */
+/* ---------------------------------------------------------- */
+/* Arrows (Used in Hero Slideshow) */
+/* ---------------------------------------------------------- */
 .arrow {
     position: absolute;
     top: 50%;
@@ -65,14 +75,23 @@ body {
     color: #333;
 }
 
-/* Header styles */
+.arrow.left {
+    left: 20px;
+}
+
+.arrow.right {
+    right: 20px;
+}
+
+/* ---------------------------------------------------------- */
+/* Header and Footer */
+/* ---------------------------------------------------------- */
 header {
     background-color: #343a40;
     color: #fff;
     padding: 20px 0;
 }
 
-/* Footer styles */
 footer {
     background-color: #343a40;
     color: #fff;
@@ -82,7 +101,9 @@ footer {
     z-index: 3;
 }
 
+/* ---------------------------------------------------------- */
 /* Hero Section */
+/* ---------------------------------------------------------- */
 .hero {
     position: relative;
     width: 100%;
@@ -90,7 +111,6 @@ footer {
     overflow: hidden;
 }
 
-/* Slideshow */
 .slideshow {
     position: relative;
     width: 100%;
@@ -98,7 +118,6 @@ footer {
     overflow: hidden;
 }
 
-/* Slideshow Image */
 .slideshow img {
     position: absolute;
     top: 0;
@@ -109,8 +128,8 @@ footer {
     z-index: 0;
 }
 
-/* Dark Overlay with Blur Effect (Hero Section Only) */
-.overlay {
+/* Dark Overlay with Blur Effect */
+.hero .overlay {
     position: absolute;
     top: 0;
     left: 0;
@@ -122,46 +141,46 @@ footer {
     pointer-events: none; /* Ensure overlay doesn't block interactions */
 }
 
-/* Arrows */
-.arrow {
+/* ---------------------------------------------------------- */
+/* Centered Hero Response Container (Newly Added) */
+/* ---------------------------------------------------------- */
+/* Centered Response in the Hero Section */
+#hero-response-container {
     position: absolute;
     top: 50%;
-    transform: translateY(-50%);
-    background-color: rgba(0, 0, 0, 0.5);
-    color: white;
-    border: none;
-    padding: 15px;
-    cursor: pointer;
-    z-index: 2;
-    transition: 0.3s;
-}
-
-.arrow:hover {
-    background-color: rgba(255, 255, 255, 0.7);
-    color: #333;
-}
-
-.arrow.left {
-    left: 20px;
-}
-
-.arrow.right {
-    right: 20px;
-}
-
-/* Main Content */
-main {
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 600px;
+    width: 90%;
     padding: 20px;
-    margin: auto;
-    max-width: 800px;
     text-align: center;
+    z-index: 3; /* Above overlay and background images */
+    opacity: 0;
+    transition: opacity 0.5s ease;
 }
 
-.hidden {
-    display: none;
+#hero-response-container.shown {
+    opacity: 1;
 }
 
+/* Style for the response container text (typewriter) inside Hero */
+#hero-response-container .response-container {
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 8px;
+    padding: 15px;
+    font-family: 'Great Vibes', cursive; /* Heavenly font */
+    font-size: 1.2rem;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    color: #333;
+    box-shadow: 0px 2px 15px rgba(255,255,255,0.5), 0px 0px 20px rgba(255,255,255,0.2);
+    border: none;
+    overflow: hidden;
+}
+
+/* ---------------------------------------------------------- */
 /* Prayer Container */
+/* ---------------------------------------------------------- */
 .prayer-container {
     position: absolute;
     top: 50%;
@@ -173,7 +192,6 @@ main {
     max-width: 500px;
 }
 
-/* Input Field */
 #prayer-input {
     width: 90%;
     max-width: 400px;
@@ -191,14 +209,13 @@ main {
 #prayer-input::placeholder {
     font-style: italic;
     color: rgba(255, 255, 255, 0.8);
-    text-align: left; /* Align placeholder text to the left */
+    text-align: left;
 }
 
 #prayer-input:focus {
     border-color: rgba(255, 255, 255, 1);
 }
 
-/* Submit Button */
 #prayer-submit {
     margin-top: 15px;
     padding: 10px 20px;
@@ -228,12 +245,19 @@ main {
     }
 }
 
-/* Exclude Overlay Effect on Prayer Container */
-.hero .overlay {
-    z-index: 1; /* Ensure it's below the prayer-container */
+/* ---------------------------------------------------------- */
+/* Main Content */
+/* ---------------------------------------------------------- */
+main {
+    padding: 20px;
+    margin: auto;
+    max-width: 800px;
+    text-align: center;
 }
 
-/* Response Section Styling */
+/* ---------------------------------------------------------- */
+/* Response Section */
+/* ---------------------------------------------------------- */
 #response-section {
     padding: 20px;
     margin: 0 auto;
@@ -241,21 +265,23 @@ main {
     text-align: left; /* Align left for better readability */
 }
 
-/* Response Container */
 .response-container {
     background: #ffffff;
     border: 1px solid #ccc;
     border-radius: 8px;
     padding: 15px;
     margin-top: 20px;
-    font-size: 1rem;
+    font-family: 'Great Vibes', cursive; /* Apply the heavenly font */
+    font-size: 2.5rem;
     line-height: 1.5;
     white-space: pre-wrap; /* Preserve formatting of the text */
     color: #333;
     box-shadow: 0px 2px 10px rgba(0,0,0,0.1);
 }
 
+/* ---------------------------------------------------------- */
 /* Loading Spinner */
+/* ---------------------------------------------------------- */
 #loading-spinner {
     display: flex;
     justify-content: center;
@@ -276,4 +302,27 @@ main {
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+
+/* ---------------------------------------------------------- */
+/* Fade-out and Typewriter Animations */
+/* ---------------------------------------------------------- */
+.fade-out {
+    opacity: 0;
+    transform: scale(0.95);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    pointer-events: none; 
+}
+
+.typewriter {
+    white-space: pre-wrap; 
+    overflow: hidden;
+    border-right: 3px solid rgba(0,0,0,0.5);
+    animation: caret 1s steps(1) infinite;
+}
+
+@keyframes caret {
+    50% {
+        border-color: transparent;
+    }
 }

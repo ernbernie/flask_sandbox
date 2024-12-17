@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bible Verse Wishing Well</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
@@ -24,7 +25,6 @@
             <button class="arrow right">&#10095;</button>
         </div>
         <div class="prayer-container">
-            <!-- Removed the <form> and just used input and button -->
             <input
                 type="text"
                 id="prayer-input"
@@ -34,16 +34,17 @@
             />
             <button type="button" id="prayer-submit">Submit Prayer</button>
         </div>
-
+    
+        <!-- New response container inside hero -->
+        <div id="hero-response-container" class="hidden">
+            <!-- We’ll dynamically insert the response text here -->
+        </div>
     </section>
-
-    <div id="response-section">
-        <!-- this is where I will try to implement the response of the openai api after we submit the prayer-->
-    </div>
-
+    
     <footer>
         <p>&copy; 2024 Flask Sandbox</p>
     </footer>
+    
 
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>

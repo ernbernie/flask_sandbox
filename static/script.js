@@ -1,4 +1,6 @@
-// --------------------------------------slideshow and arrows----------------------------------
+// ----------------------------------------------------------
+// Slideshow and Arrows
+// ----------------------------------------------------------
 const images = [
     "/static/images/image1.jpg",
     "/static/images/image2.jpg",
@@ -41,7 +43,7 @@ function resetTimer() {
     timer = setInterval(nextImage, 13000); // Restart the timer
 }
 
-// Function to handle cooldown logic
+// Function to handle cooldown logic for arrows
 function handleArrowClick(action) {
     if (isCooldown) return; // Ignore clicks during cooldown
     isCooldown = true; // Activate cooldown
@@ -65,48 +67,62 @@ document.querySelector('.arrow.right').addEventListener('click', () => handleArr
 // Start the slideshow on page load
 startSlideshow();
 
-// -------------------------------submitting prayer------------------------------------------------------------------
-// Create a loading spinner element (can be styled in CSS)
+// ----------------------------------------------------------
+// Prayer Submission and Response Handling
+// ----------------------------------------------------------
+
+// References
+const prayerContainer = document.querySelector('.prayer-container');
+const prayerSubmit = document.getElementById("prayer-submit");
+const heroResponseContainer = document.getElementById('hero-response-container');
+
+// Create a loading spinner element
 const loadingSpinner = document.createElement('div');
 loadingSpinner.id = 'loading-spinner';
-loadingSpinner.innerHTML = `
-    <div class="spinner"></div>
-`;
+loadingSpinner.innerHTML = `<div class="spinner"></div>`;
 
-// Display a loading indicator when making requests
+// Show loading inside heroResponseContainer
 function showLoading() {
-    const responseSection = document.getElementById("response-section");
-    responseSection.innerHTML = ""; // Clear any previous responses
-    responseSection.appendChild(loadingSpinner);
+    heroResponseContainer.innerHTML = "";
+    heroResponseContainer.classList.remove('hidden');
+    heroResponseContainer.appendChild(loadingSpinner);
+    heroResponseContainer.classList.add('shown');
 }
 
 function hideLoading() {
-    const responseSection = document.getElementById("response-section");
     const spinner = document.getElementById('loading-spinner');
     if (spinner) {
-        responseSection.removeChild(spinner);
+        spinner.remove();
     }
 }
 
-// Function to display the API response in a styled container
-function displayResponse(text) {
-    const responseSection = document.getElementById("response-section");
-    // Clear any existing content (like loading spinner)
-    responseSection.innerHTML = "";
+// Typewriter effect function
+function typeWriterEffect(element, text, speed = 130) {
+    let index = 0;
+    element.textContent = '';
+    element.classList.add('typewriter');
 
-    // Create a container for the response text
-    const responseContainer = document.createElement("div");
-    responseContainer.className = "response-container";
-
-    // Set the text content and preserve formatting (like new lines)
-    responseContainer.textContent = text;
-
-    // Append to the response section
-    responseSection.appendChild(responseContainer);
+    function type() {
+        if (index < text.length) {
+            element.textContent += text.charAt(index);
+            index++;
+            setTimeout(type, speed);
+        } else {
+            // Remove the caret after typing completes
+            element.style.borderRight = 'none';
+        }
+    }
+    type();
 }
 
-document.getElementById("prayer-submit").addEventListener("click", function (e) {
-    e.preventDefault(); // Prevent default behavior
+// Fade out the prayer form
+function fadeOutPrayerForm() {
+    prayerContainer.classList.add('fade-out');
+}
+
+// On submit
+prayerSubmit.addEventListener("click", function (e) {
+    e.preventDefault();
 
     const prayerText = document.getElementById("prayer-input").value.trim();
     if (!prayerText) {
@@ -116,33 +132,53 @@ document.getElementById("prayer-submit").addEventListener("click", function (e) 
 
     const prayer = `Dear Heavenly Father, ${prayerText}`;
 
-    // Show loading indicator before the fetch call
-    showLoading();
+    // Fade out the prayer form
+    fadeOutPrayerForm();
 
-    fetch('/submit-prayer', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ prayer })
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`Server error: ${response.status} ${response.statusText}`);
-        }
-        return response.json();
-    })
-    .then(data => {
-        hideLoading();
-        if (data.error) {
-            alert("Error: " + data.error);
-        } else {
-            displayResponse(data.response);
-        }
-    })
-    .catch(error => {
-        hideLoading();
-        console.error('Error:', error);
-        alert("An unexpected error occurred. Please try again later.");
+    // Wait for the fade-out transition to end
+    prayerContainer.addEventListener('transitionend', function onTransitionEnd() {
+        prayerContainer.removeEventListener('transitionend', onTransitionEnd);
+        
+        // Hide the prayer container after fade-out
+        prayerContainer.style.display = 'none';
+
+        // Show loading spinner in heroResponseContainer
+        showLoading();
+
+        // Fetch the response from the server
+        fetch('/submit-prayer', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ prayer })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Server error: ${response.status} ${response.statusText}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            hideLoading();
+
+            if (data.error) {
+                alert("Error: " + data.error);
+            } else {
+                // Display the response with a typewriter effect
+                heroResponseContainer.innerHTML = ""; // Clear loading
+                const responseDiv = document.createElement("div");
+                responseDiv.className = "response-container";
+                heroResponseContainer.appendChild(responseDiv);
+
+                // Apply typewriter effect to the response
+                typeWriterEffect(responseDiv, data.response, 40);
+            }
+        })
+        .catch(error => {
+            hideLoading();
+            console.error('Error:', error);
+            alert("An unexpected error occurred. Please try again later.");
+        });
     });
 });
